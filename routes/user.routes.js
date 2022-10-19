@@ -1,4 +1,4 @@
-const { authJWT } = require('../middleware/authJWT');
+const { authJWT } = require('../middleware');
 const controller = require("../controllers/user.controller");
 
 module.exports = function(app) {
@@ -10,6 +10,10 @@ module.exports = function(app) {
         next();
     });
 
-    app.get("/api/test/all", [authJWT.verifyToken], controller.allAccess);
-
-}
+    // app.get("/api/test/all", [authJWT.verifyToken], controller.allAccess);
+    app.post("/api/user/create", [authJWT.verifyToken], controller.createUser);
+    app.put("/api/user/update/:id", [authJWT.verifyToken], controller.updateUser);
+    app.put("/api/user/delete/:id", [authJWT.verifyToken], controller.deleteUser);
+    app.get("/api/user/findOne/:id", [authJWT.verifyToken], controller.findOneUser);
+    app.get("/api/user/findAll", [authJWT.verifyToken], controller.findAllUser);
+};

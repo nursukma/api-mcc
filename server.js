@@ -20,11 +20,11 @@ app.use(bodyParser.urlencoded({
 
 // for db
 const db = require('./model');
-db.sequelize.sync({
-    force: true
-}).then(() => {
-    console.log('Drop and Resync Db');
-});
+// db.sequelize.sync({
+//     force: true
+// }).then(() => {
+//     console.log('Drop and Resync Db');
+// });
 
 // for route
 app.get('/', (req, res) => {

@@ -1,5 +1,7 @@
 const db = require('../model');
 const config = require('../config/auth.config');
+const sequelize = require('sequelize');
+
 const User = db.user;
 
 const Op = db.Sequelize.Op;
@@ -23,8 +25,8 @@ exports.signin = (req, res) => {
         }
 
         var passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
+            req.body.pwd,
+            user.pwd
         );
 
         if (!passwordIsValid) {
@@ -38,6 +40,12 @@ exports.signin = (req, res) => {
             expiresIn: 604800
         });
 
+        User.update({
+            last_login: sequelize.literal('CURRENT_TIMESTAMP')
+        }, {
+            where: { id: user.id }
+        });
+
         // var authorities = [];
         res.status(200).send({
             id: user.id,
@@ -46,5 +54,7 @@ exports.signin = (req, res) => {
             // roles: authorities,
             accessToken: token
         });
+    }).catch(err => {
+        res.status(500).send({ message: err.message });
     });
 };
