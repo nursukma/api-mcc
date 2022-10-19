@@ -3,6 +3,8 @@ const config = require('../config/auth.config');
 const db = require('../model');
 const User = db.user;
 
+const Op = db.Sequelize.Op;
+
 verifyToken = (req, res, next) => {
     let token = req.headers['x-access-token'];
 
@@ -39,9 +41,48 @@ verifyToken = (req, res, next) => {
 //     });
 // };
 
+checkDuplicateUsernameOrEmail = (req, res, next) => {
+    // Username
+    User.findOne({
+        where: {
+            [Op.and]: [
+                { username: req.body.username },
+                { deleted_at: null }
+            ]
+        }
+    }).then(user => {
+        if (user) {
+            res.status(400).send({
+                message: "Failed! Username is already in use!"
+            });
+            return;
+        }
+
+        // Email
+        User.findOne({
+            where: {
+                [Op.and]: [
+                    { email: req.body.email },
+                    { deleted_at: null }
+                ]
+            }
+        }).then(user => {
+            if (user) {
+                res.status(400).send({
+                    message: "Failed! Email is already in use!"
+                });
+                return;
+            }
+
+            next();
+        });
+    });
+};
+
 const authJWT = {
     verifyToken: verifyToken,
-    // isLogin: isLogin
+    checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail
+        // isLogin: isLogin
 };
 
 module.exports = authJWT;

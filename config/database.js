@@ -15,7 +15,8 @@ module.exports = {
         dialectOptions: {
             "collate": "utf8_general_ci"
         },
-        freezeTableName: true
+        freezeTableName: true,
+        timestamps: false
     },
     dialectOptions: {
         "useUTC": false

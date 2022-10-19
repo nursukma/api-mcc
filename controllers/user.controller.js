@@ -6,10 +6,6 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 var bcrypt = require('bcryptjs');
 
-// exports.allAccess = (req, res) => {
-//     res.status(200).send("Provided Content.");
-// };
-
 // query for create user
 exports.createUser = (req, res) => {
     User.create({
@@ -26,6 +22,7 @@ exports.createUser = (req, res) => {
     });
 };
 
+// query for update user
 exports.updateUser = (req, res) => {
     const id = req.params.id;
 
@@ -73,6 +70,7 @@ exports.updateUser = (req, res) => {
     });
 };
 
+// query for delete user
 exports.deleteUser = (req, res) => {
     const id = req.params.id;
 
@@ -106,6 +104,7 @@ exports.deleteUser = (req, res) => {
     });
 };
 
+// query for find one user by id
 exports.findOneUser = (req, res) => {
     const id = req.params.id;
 
@@ -130,6 +129,7 @@ exports.findOneUser = (req, res) => {
     });
 };
 
+// query for find all user
 exports.findAllUser = (req, res) => {
     User.findAll({
         where: {

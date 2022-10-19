@@ -1,19 +1,48 @@
-// const { Sequelize } = require("sequelize");
+// const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define('user', {
-        role: {
-            type: Sequelize.STRING
+    const User = sequelize.define('account', {
+        id: {
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV4,
+            primaryKey: true,
+            autoIncrement: true
         },
-        username: { type: Sequelize.STRING },
-        pwd: { type: Sequelize.STRING },
-        email: { type: Sequelize.STRING },
-        fullname: { type: Sequelize.STRING },
-        last_login: { type: Sequelize.DATE },
-        created_at: { type: Sequelize.DATE },
-        updated_at: { type: Sequelize.DATE },
-        deleted_at: { type: Sequelize.DATE },
-    });
+        role: {
+            type: Sequelize.STRING(25),
+            vaidate: {
+                notEmpty: true
+            }
+        },
+        username: {
+            type: Sequelize.STRING(100),
+            vaidate: {
+                notEmpty: true
+            }
+        },
+        pwd: {
+            type: Sequelize.TEXT,
+            vaidate: {
+                notEmpty: true
+            }
+        },
+        email: {
+            type: Sequelize.STRING,
+            vaidate: {
+                notEmpty: true
+            }
+        },
+        fullname: {
+            type: Sequelize.STRING(100),
+            vaidate: {
+                notEmpty: true
+            }
+        },
+        last_login: { type: Sequelize.DATE(6) },
+        created_at: { type: Sequelize.DATE(6) },
+        updated_at: { type: Sequelize.DATE(6) },
+        deleted_at: { type: Sequelize.DATE(6) },
+    }, { timestamps: false, tableName: 'account', schema: 'user' });
 
     return User;
 };
