@@ -13,10 +13,20 @@ exports.createUser = (req, res) => {
         email: req.body.email,
         username: req.body.username,
         pwd: bcrypt.hashSync(req.body.pwd, 8),
-        fullname: req.body.email,
+        fullname: req.body.fullname,
         // created_at: waktu
-    }).then(() => {
-        res.send({ message: "User was Added Successfully!!" });
+    }).then(user => {
+        res.send({
+            data: [{
+                role: user.role,
+                email: user.email,
+                username: user.username,
+                pwd: user.pwd,
+                fullname: user.fullname
+            }],
+            message: "OK!",
+            statusCode: 200
+        });
     }).catch(err => {
         res.status(500).send({ message: err.message });
     });
@@ -45,19 +55,23 @@ exports.updateUser = (req, res) => {
             email: req.body.email,
             username: req.body.username,
             pwd: bcrypt.hashSync(req.body.pwd, 8),
-            fullname: req.body.email,
+            fullname: req.body.fullname,
         }, {
             where: { id: id }
-        }).then(num => {
-            if (num == 1) {
+        }).then(() => {
+            return User.findOne({ where: { id: id } }).then(user => {
                 res.send({
-                    message: "User was Updated Successfully!"
+                    data: [{
+                        role: user.role,
+                        email: user.email,
+                        username: user.username,
+                        pwd: user.pwd,
+                        fullname: user.fullname
+                    }],
+                    message: "OK!",
+                    statusCode: 200
                 });
-            } else {
-                res.send({
-                    message: `Cannot Update User id:${id}.`
-                });
-            }
+            });
         }).catch(err => {
             res.status(500).send({
                 message: "Error Update User id: " + id + " with Error: " + err
@@ -82,15 +96,14 @@ exports.deleteUser = (req, res) => {
             ]
         }
     }).then(() => {
-        User.update({
-            deleted_at: sequelize.literal('CURRENT_TIMESTAMP')
-        }, {
+        User.destroy({
             where: {
                 id: id
             }
-        }).then(() => {
-            res.status(200).send({
-                message: "User was Deleted Successfully! "
+        }).then(user => {
+            res.send({
+                message: "OK!",
+                statusCode: 200
             });
         }).catch(err => {
             res.status(500).send({
@@ -121,7 +134,17 @@ exports.findOneUser = (req, res) => {
                 message: "User not Found!"
             });
         }
-        res.status(200).send(user);
+        res.send({
+            data: [{
+                role: user.role,
+                email: user.email,
+                username: user.username,
+                pwd: user.pwd,
+                fullname: user.fullname
+            }],
+            message: "OK!",
+            statusCode: 200
+        });
     }).catch(err => {
         res.status(500).send({
             message: "Error Get Data User id: " + id + " with Error: " + err
@@ -135,8 +158,12 @@ exports.findAllUser = (req, res) => {
         where: {
             deleted_at: null
         }
-    }).then(data => {
-        res.send(data);
+    }).then(user => {
+        res.send({
+            data: [user],
+            message: "OK!",
+            statusCode: 200
+        });
     }).catch(err => {
         res.status(500).send({
             message: "Error Get Data User with Error: " + err

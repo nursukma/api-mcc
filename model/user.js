@@ -41,8 +41,17 @@ module.exports = (sequelize, Sequelize) => {
         last_login: { type: Sequelize.DATE(6) },
         created_at: { type: Sequelize.DATE(6) },
         updated_at: { type: Sequelize.DATE(6) },
-        deleted_at: { type: Sequelize.DATE(6) },
-    }, { timestamps: false, tableName: 'account', schema: 'user' });
+        deleted_at: 'destroyTime',
+    }, {
+        paranoid: true,
+        timestamps: true,
+        freezeTableName: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
+        tableName: 'account',
+        schema: 'user'
+    });
 
     return User;
 };

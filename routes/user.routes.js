@@ -10,10 +10,9 @@ module.exports = function(app) {
         next();
     });
 
-    // app.get("/api/test/all", [authJWT.verifyToken], controller.allAccess);
-    app.post("/api/user/create", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.createUser);
-    app.put("/api/user/update/:id", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.updateUser);
-    app.put("/api/user/delete/:id", [authJWT.verifyToken], controller.deleteUser);
-    app.get("/api/user/findOne/:id", [authJWT.verifyToken], controller.findOneUser);
-    app.get("/api/user/findAll", [authJWT.verifyToken], controller.findAllUser);
+    app.post("/users/create", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.createUser);
+    app.put("/users/update/:id", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.updateUser);
+    app.delete("/users/delete/:id", [authJWT.verifyToken], controller.deleteUser);
+    app.get("/users/:id", [authJWT.verifyToken], controller.findOneUser);
+    app.get("/users", [authJWT.verifyToken], controller.findAllUser);
 };
