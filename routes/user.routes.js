@@ -10,8 +10,8 @@ module.exports = function(app) {
         next();
     });
 
-    app.post("/users/create", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.createUser);
-    app.put("/users/update/:id", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.updateUser);
+    app.post("/users", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.createUser);
+    app.put("/users/:id", [authJWT.verifyToken, authJWT.checkDuplicateUsernameOrEmail], controller.updateUser);
     app.delete("/users/delete/:id", [authJWT.verifyToken], controller.deleteUser);
     app.get("/users/:id", [authJWT.verifyToken], controller.findOneUser);
     app.get("/users", [authJWT.verifyToken], controller.findAllUser);

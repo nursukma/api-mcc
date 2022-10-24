@@ -10,17 +10,12 @@ module.exports = {
         acquire: 30000,
         idle: 10000
     },
-    define: {
-        charset: "utf8",
-        dialectOptions: {
-            "collate": "utf8_general_ci"
-        },
-        freezeTableName: true,
-        timestamps: false
-    },
     dialectOptions: {
-        "useUTC": false
+        useUTC: false,
+        dateStrings: true,
+        typeCast: true,
     },
     // timezone: '+07:00'
-    timezone: 'Asia/Jakarta',
+    timezone: '+07:00',
+    operatorAliases: false
 };
