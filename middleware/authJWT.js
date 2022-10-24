@@ -6,23 +6,22 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 
 verifyToken = (req, res, next) => {
-    let token = req.headers['x-access-token'];
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-        return res.status(403).send({
-            message: "No Token Provided!"
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, config.secret, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+
+            req.user = user;
+            next();
         });
+    } else {
+        res.sendStatus(401);
     }
-
-    jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-            return res.status(401).send({
-                message: "Unauthorized!"
-            });
-        }
-        req.userId = decoded.id;
-        next();
-    });
 };
 
 // isLogin = (req, res, next) => {
