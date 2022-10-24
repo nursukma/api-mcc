@@ -36,12 +36,7 @@ exports.signin = (req, res) => {
             });
         }
 
-        var token = jwt.sign({
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            fullname: user.fullname,
-        }, config.secret, {
+        var token = jwt.sign({ user: user }, config.secret, {
             expiresIn: 604800
         });
 
@@ -53,11 +48,6 @@ exports.signin = (req, res) => {
 
         // var authorities = [];
         res.status(200).send({
-            data: [{
-                id: user.id,
-                username: user.username,
-                email: user.email,
-            }],
             accessToken: token
         });
     }).catch(err => {
